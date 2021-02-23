@@ -25,13 +25,13 @@ export function Countdown() {
   useEffect(() => {
     if (active && time > 0) {
       setTimeout(() => {
-        setTime(currProps => currProps - 1);
+        setTime(currState => currState - 1);
       }, 1000);
     }
   }, [active, time]);
 
   function onClickCountButton() {
-    setActive(currProps => !currProps);
+    setActive(currState => !currState);
   }
 
   const { minutesLeft, minutesRight, secondsLeft, secondsRight } = timeValues;
