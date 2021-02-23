@@ -26,7 +26,7 @@ export default createGlobalStyle<ThemeType>`
   }
 
   body, input, button, textarea {
-    font: 400 16rem ${props => props.font.inter};
+    font: 400 1.6rem ${props => props.font.inter};
   }
 
   a {
