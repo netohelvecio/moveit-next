@@ -37,7 +37,7 @@ export function Countdown() {
   const { minutesLeft, minutesRight, secondsLeft, secondsRight } = timeValues;
 
   return (
-    <Container>
+    <>
       <CountContainer>
         <NumbersContainer>
           <span>{minutesLeft}</span>
@@ -53,6 +53,6 @@ export function Countdown() {
       </CountContainer>
 
       <CountButton onClick={onClickCountButton}>Iniciar ciclo</CountButton>
-    </Container>
+    </>
   );
 }

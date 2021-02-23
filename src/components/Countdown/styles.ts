@@ -1,7 +1,5 @@
 import { styled } from '../../styles/theme';
 
-export const Container = styled.div``;
-
 export const CountContainer = styled.div`
   display: flex;
   align-items: center;
