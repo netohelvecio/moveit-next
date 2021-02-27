@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+
+import { useChallenges } from '../../contexts/ChallengesContext';
 import { getMinutesAndSeconds } from '../../utils/getMinutesAndSeconds';
 import { IMinutesAndSeconds } from '../../utils/interfaces';
 
@@ -20,6 +22,8 @@ export function Countdown() {
   const [active, setActive] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
 
+  const { startNewChallenge } = useChallenges();
+
   useEffect(() => {
     const values = getMinutesAndSeconds(time);
 
@@ -34,6 +38,7 @@ export function Countdown() {
     } else if (active && time === 0) {
       setHasFinished(true);
       setActive(false);
+      startNewChallenge();
     }
   }, [active, time]);
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useChallenges } from '../../contexts/ChallengesContext';
+
 import {
   Container,
   ChallengeActive,
@@ -9,25 +11,28 @@ import {
   ChallengeNotActive,
 } from './styles';
 
-const hasActiveChallenge = true;
-
 export function ChallengeBox() {
+  const { challengesStatus, resetChallenge } = useChallenges();
+
   return (
     <Container>
-      {hasActiveChallenge ? (
+      {challengesStatus.currentChallenge ? (
         <ChallengeActive>
-          <header>Ganhe 400XP</header>
+          <header>Ganhe {challengesStatus.currentChallenge.amount} XP</header>
 
           <ChallengeInfo>
-            <img src="icons/body.svg" alt="Body" />
+            <img
+              src={`icons/${challengesStatus.currentChallenge.type}.svg`}
+              alt="Body"
+            />
             <strong>Novo desafio</strong>
-            <p>Levante e faça uma caminha de 3 minutos.</p>
+            <p>{challengesStatus.currentChallenge.description}</p>
           </ChallengeInfo>
 
           <footer>
-            <FailedButton>Falhei</FailedButton>
+            <FailedButton onClick={resetChallenge}>Falhei</FailedButton>
 
-            <SucceededButton>Falhei</SucceededButton>
+            <SucceededButton>Completei</SucceededButton>
           </footer>
         </ChallengeActive>
       ) : (

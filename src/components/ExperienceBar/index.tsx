@@ -1,17 +1,33 @@
+import { useMemo } from 'react';
+
+import { useChallenges } from '../../contexts/ChallengesContext';
+
 import { Header, LevelProgress, CurrentExperience } from './styles';
 
 export function ExperienceBar() {
+  const { challengesStatus, experienceToNextLevel } = useChallenges();
+
+  const percentToNextLevel = useMemo(
+    () =>
+      Math.round(
+        (challengesStatus.currentExperience * 100) / experienceToNextLevel,
+      ),
+    [challengesStatus.currentExperience, experienceToNextLevel],
+  );
+
   return (
     <Header>
       <span>0 XP</span>
 
       <div>
-        <LevelProgress width={50} />
+        <LevelProgress width={percentToNextLevel} />
 
-        <CurrentExperience left={50}>300px</CurrentExperience>
+        <CurrentExperience left={percentToNextLevel}>
+          {challengesStatus.currentExperience} xp
+        </CurrentExperience>
       </div>
 
-      <span>600 XP</span>
+      <span>{experienceToNextLevel} XP</span>
     </Header>
   );
 }

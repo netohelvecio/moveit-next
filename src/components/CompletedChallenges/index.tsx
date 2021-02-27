@@ -1,10 +1,14 @@
+import { useChallenges } from '../../contexts/ChallengesContext';
+
 import { Container } from './styles';
 
 export function CompletedChallenges() {
+  const { challengesStatus } = useChallenges();
+
   return (
     <Container>
       <span>Desafios completos</span>
-      <span>5</span>
+      <span>{challengesStatus.challengesCompleted}</span>
     </Container>
   );
 }
