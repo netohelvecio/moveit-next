@@ -3,18 +3,22 @@ import { getMinutesAndSeconds } from '../../utils/getMinutesAndSeconds';
 import { IMinutesAndSeconds } from '../../utils/interfaces';
 
 import {
-  Container,
   CountContainer,
   NumbersContainer,
-  CountButton,
+  CountButtonStart,
+  CountButtonActive,
+  CountButtonFinished,
 } from './styles';
 
+let countdownTimeout: NodeJS.Timeout;
+
 export function Countdown() {
-  const [time, setTime] = useState(25 * 60);
+  const [time, setTime] = useState(0.1 * 60);
   const [timeValues, setTimeValues] = useState<IMinutesAndSeconds>(
     {} as IMinutesAndSeconds,
   );
   const [active, setActive] = useState(false);
+  const [hasFinished, setHasFinished] = useState(false);
 
   useEffect(() => {
     const values = getMinutesAndSeconds(time);
@@ -24,14 +28,23 @@ export function Countdown() {
 
   useEffect(() => {
     if (active && time > 0) {
-      setTimeout(() => {
+      countdownTimeout = setTimeout(() => {
         setTime(currState => currState - 1);
       }, 1000);
+    } else if (active && time === 0) {
+      setHasFinished(true);
+      setActive(false);
     }
   }, [active, time]);
 
   function onClickCountButton() {
-    setActive(currState => !currState);
+    setActive(true);
+  }
+
+  function resetCountdown() {
+    clearTimeout(countdownTimeout);
+    setActive(false);
+    setTime(0.1 * 60);
   }
 
   const { minutesLeft, minutesRight, secondsLeft, secondsRight } = timeValues;
@@ -52,7 +65,21 @@ export function Countdown() {
         </NumbersContainer>
       </CountContainer>
 
-      <CountButton onClick={onClickCountButton}>Iniciar ciclo</CountButton>
+      {hasFinished ? (
+        <CountButtonFinished disabled>Ciclo encerrado</CountButtonFinished>
+      ) : (
+        <>
+          {active ? (
+            <CountButtonActive onClick={resetCountdown}>
+              Abandonar ciclo
+            </CountButtonActive>
+          ) : (
+            <CountButtonStart onClick={onClickCountButton}>
+              Iniciar ciclo
+            </CountButtonStart>
+          )}
+        </>
+      )}
     </>
   );
 }

@@ -39,7 +39,7 @@ export const NumbersContainer = styled.div`
   }
 `;
 
-export const CountButton = styled.button`
+export const CountButtonStart = styled.button`
   width: 100%;
   height: 5rem;
   margin-top: 2rem;
@@ -57,9 +57,29 @@ export const CountButton = styled.button`
   font-size: 1.25rem;
   font-weight: 600;
 
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 
   &:hover {
     background-color: ${props => props.theme.colors.blueDark};
+  }
+`;
+
+export const CountButtonActive = styled(CountButtonStart)`
+  background-color: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.title};
+
+  &:hover {
+    background-color: ${props => props.theme.colors.red};
+    color: ${props => props.theme.colors.white};
+  }
+`;
+
+export const CountButtonFinished = styled(CountButtonStart)`
+  cursor: not-allowed;
+  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.white};
+
+  &:hover {
+    background-color: ${props => props.theme.colors.white};
   }
 `;
