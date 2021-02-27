@@ -68,9 +68,9 @@ export function CountdownProvider({ children }: ICountdownProviderProps) {
   function resetCountdown() {
     clearTimeout(countdownTimeout);
     setCountdownStatus({
-      ...countdownStatus,
       isActive: false,
       time: 0.1 * 60,
+      hasFinished: false,
     });
   }
 
