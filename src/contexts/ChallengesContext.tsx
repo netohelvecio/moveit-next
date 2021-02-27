@@ -18,9 +18,9 @@ interface IChallengesStatus {
 interface IChallengeContext {
   challengesStatus: IChallengesStatus;
   experienceToNextLevel: number;
-  levelUp: () => void;
   startNewChallenge: () => void;
   resetChallenge: () => void;
+  completeChallenge: () => void;
 }
 
 const ChallengesContext = createContext<IChallengeContext>(
@@ -37,15 +37,8 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
 
   const experienceToNextLevel = useMemo(
     () => Math.pow((challengesStatus.level + 1) * 4, 2),
-    [challengesStatus.level],
+    [challengesStatus],
   );
-
-  function levelUp() {
-    setChallengesStatus({
-      ...challengesStatus,
-      level: challengesStatus.level + 1,
-    });
-  }
 
   function startNewChallenge() {
     const randomChallenge = Math.floor(Math.random() * challenges.length);
@@ -64,14 +57,44 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
     });
   }
 
+  function completeChallenge() {
+    if (!challengesStatus.currentChallenge) {
+      return;
+    }
+
+    const { amount } = challengesStatus.currentChallenge;
+
+    let finalExperience = challengesStatus.currentExperience + amount;
+
+    if (finalExperience >= experienceToNextLevel) {
+      finalExperience -= experienceToNextLevel;
+
+      setChallengesStatus({
+        currentExperience: finalExperience,
+        currentChallenge: null,
+        challengesCompleted: challengesStatus.challengesCompleted + 1,
+        level: challengesStatus.level + 1,
+      });
+
+      return;
+    }
+
+    setChallengesStatus({
+      ...challengesStatus,
+      currentExperience: finalExperience,
+      currentChallenge: null,
+      challengesCompleted: challengesStatus.challengesCompleted + 1,
+    });
+  }
+
   return (
     <ChallengesContext.Provider
       value={{
         challengesStatus,
-        levelUp,
         startNewChallenge,
         resetChallenge,
         experienceToNextLevel,
+        completeChallenge,
       }}
     >
       {children}
@@ -83,16 +106,16 @@ export function useChallenges() {
   const {
     challengesStatus,
     experienceToNextLevel,
-    levelUp,
     startNewChallenge,
     resetChallenge,
+    completeChallenge,
   } = useContext(ChallengesContext);
 
   return {
     challengesStatus,
-    levelUp,
     startNewChallenge,
     resetChallenge,
     experienceToNextLevel,
+    completeChallenge,
   };
 }

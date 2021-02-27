@@ -12,7 +12,11 @@ import {
 } from './styles';
 
 export function ChallengeBox() {
-  const { challengesStatus, resetChallenge } = useChallenges();
+  const {
+    challengesStatus,
+    resetChallenge,
+    completeChallenge,
+  } = useChallenges();
 
   return (
     <Container>
@@ -32,7 +36,9 @@ export function ChallengeBox() {
           <footer>
             <FailedButton onClick={resetChallenge}>Falhei</FailedButton>
 
-            <SucceededButton>Completei</SucceededButton>
+            <SucceededButton onClick={completeChallenge}>
+              Completei
+            </SucceededButton>
           </footer>
         </ChallengeActive>
       ) : (

@@ -12,7 +12,7 @@ export function ExperienceBar() {
       Math.round(
         (challengesStatus.currentExperience * 100) / experienceToNextLevel,
       ),
-    [challengesStatus.currentExperience, experienceToNextLevel],
+    [challengesStatus, experienceToNextLevel],
   );
 
   return (
