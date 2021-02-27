@@ -27,6 +27,7 @@
       "import/prefer-default-export": "off",
       "no-use-before-define": "off",
       "no-restricted-properties": "off",
+      "no-new": "off",
       "import/extensions": [
 	      "error",
 	      "ignorePackages",

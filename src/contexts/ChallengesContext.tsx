@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { IChallenge } from '../utils/interfaces';
 
@@ -35,6 +42,10 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
     currentChallenge: null,
   });
 
+  useEffect(() => {
+    Notification.requestPermission();
+  }, []);
+
   const experienceToNextLevel = useMemo(
     () => Math.pow((challengesStatus.level + 1) * 4, 2),
     [challengesStatus],
@@ -48,6 +59,14 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
       ...challengesStatus,
       currentChallenge: challenge,
     });
+
+    new Audio('/notification.mp3').play();
+
+    if (Notification.permission === 'granted') {
+      new Notification('Novo desafio 🎉', {
+        body: `Valendo ${challenge.amount}xp!`,
+      });
+    }
   }
 
   function resetChallenge() {
