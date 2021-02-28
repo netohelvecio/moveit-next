@@ -10,3 +10,10 @@ export interface IChallenge {
   description: string;
   amount: number;
 }
+
+export interface IChallengesStatus {
+  level: number;
+  currentExperience: number;
+  challengesCompleted: number;
+  currentChallenge: IChallenge | null;
+}

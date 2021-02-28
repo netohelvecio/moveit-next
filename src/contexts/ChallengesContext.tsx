@@ -6,20 +6,14 @@ import {
   useMemo,
   useState,
 } from 'react';
+import Cookies from 'js-cookie';
 
-import { IChallenge } from '../utils/interfaces';
+import { IChallenge, IChallengesStatus } from '../utils/interfaces';
 
 import challenges from '../../challenges.json';
 
 interface IChallengeProviderProps {
   children: ReactNode;
-}
-
-interface IChallengesStatus {
-  level: number;
-  currentExperience: number;
-  challengesCompleted: number;
-  currentChallenge: IChallenge | null;
 }
 
 interface IChallengeContext {
@@ -28,6 +22,7 @@ interface IChallengeContext {
   startNewChallenge: () => void;
   resetChallenge: () => void;
   completeChallenge: () => void;
+  setChallengesStatus: (status: IChallengesStatus) => void;
 }
 
 const ChallengesContext = createContext<IChallengeContext>(
@@ -45,6 +40,10 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
   useEffect(() => {
     Notification.requestPermission();
   }, []);
+
+  useEffect(() => {
+    Cookies.set('challengesStatus', challengesStatus);
+  }, [challengesStatus]);
 
   const experienceToNextLevel = useMemo(
     () => Math.pow((challengesStatus.level + 1) * 4, 2),
@@ -114,6 +113,7 @@ export function ChallengesProvider({ children }: IChallengeProviderProps) {
         resetChallenge,
         experienceToNextLevel,
         completeChallenge,
+        setChallengesStatus,
       }}
     >
       {children}
@@ -128,6 +128,7 @@ export function useChallenges() {
     startNewChallenge,
     resetChallenge,
     completeChallenge,
+    setChallengesStatus,
   } = useContext(ChallengesContext);
 
   return {
@@ -136,5 +137,6 @@ export function useChallenges() {
     resetChallenge,
     experienceToNextLevel,
     completeChallenge,
+    setChallengesStatus,
   };
 }
